@@ -18,9 +18,10 @@ export const Log = async (stack, level, pkg, message) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // This is your protected route key!
-                "Authorization": `Bearer YOUR_TOKEN_HERE` 
+                // Added "Bearer " before the token!
+                "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiYXVkIjoiaHR0cDovLzIwLjI0NC41Ni4xNDQvZXZhbHVhdGlvbi1zZXJ2aWNlIiwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsImV4cCI6MTc4MDYzMzQ1MCwiaWF0IjoxNzgwNjMyNTUwLCJpc3MiOiJBZmZvcmQgTWVkaWNhbCBUZWNobm9sb2dpZXMgUHJpdmF0ZSBMaW1pdGVkIiwianRpIjoiNzk5MGFlMmYtNWU0NC00Y2FmLTljMDItNmYwYWVmMmU2YTMxIiwibG9jYWxlIjoiZW4tSU4iLCJuYW1lIjoiYWRhcnNoIGtpcmFuIHRhcHBpdGEiLCJzdWIiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAifSwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsIm5hbWUiOiJhZGFyc2gga2lyYW4gdGFwcGl0YSIsInJvbGxObyI6IjIzYnExYTA1MDIiLCJhY2Nlc3NDb2RlIjoiUVFkRVl5IiwiY2xpZW50SUQiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAiLCJjbGllbnRTZWNyZXQiOiJtUnhjWGp4WHpheFhLaFZ3In0.AZQzShWPTXopKZXFYcvC44F8vc3ZYBzBidOLU5ra8FA` 
             },
+            // Fixed the "paayload" typo!
             body: JSON.stringify(payload)
         });
 
