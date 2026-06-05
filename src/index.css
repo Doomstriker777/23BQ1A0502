@@ -18,6 +18,22 @@
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light dark;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #fafafa;
+}
+
+#root {
+  min-height: 100vh;
+}
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
