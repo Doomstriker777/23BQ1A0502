@@ -45,6 +45,32 @@ const AllNotifications = ({ token }) => {
         setNotifications([...notifications]);
     };
 
+    const getTypeColor = (type) => {
+        switch (type) {
+            case 'Placement':
+                return '#d32f2f';
+            case 'Result':
+                return '#f57c00';
+            case 'Event':
+                return '#1976d2';
+            default:
+                return '#757575';
+        }
+    };
+
+    // Group notifications by type
+    const groupedNotifications = notifications.reduce((acc, notif) => {
+        const type = notif.type || 'Other';
+        if (!acc[type]) acc[type] = [];
+        acc[type].push(notif);
+        return acc;
+    }, {});
+
+    const displayGroups = Object.keys(groupedNotifications).sort((a, b) => {
+        const order = { 'Placement': 0, 'Result': 1, 'Event': 2 };
+        return (order[a] || 3) - (order[b] || 3);
+    });
+
     return (
         <Container maxWidth="md" sx={{ py: 4 }}>
             <Typography variant="h4" sx={{ mb: 3, fontWeight: 'bold' }}>
@@ -71,77 +97,79 @@ const AllNotifications = ({ token }) => {
                     <CircularProgress />
                 </Box>
             ) : (
-                <Grid container spacing={2}>
-                    {notifications.map((notification, index) => {
-                        const notifId = notification.id || notification.timestamp || index;
-                        const read = isRead(notifId);
+                displayGroups.map((type) => (
+                    <Box key={type} sx={{ mb: 4 }}>
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                mb: 2,
+                                pb: 1,
+                                borderBottom: `3px solid ${getTypeColor(type)}`,
+                                fontWeight: 'bold',
+                                color: getTypeColor(type)
+                            }}
+                        >
+                            {type}
+                        </Typography>
+                        <Grid container spacing={2}>
+                            {groupedNotifications[type].map((notification, index) => {
+                                const notifId = notification.id || notification.timestamp || `${type}-${index}`;
+                                const read = isRead(notifId);
 
-                        return (
-                            <Grid item xs={12} key={String(notifId)}>
-                                <Card
-                                    onClick={() => handleNotificationClick(notifId)}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        opacity: read ? 0.6 : 1,
-                                        backgroundColor: read ? '#f5f5f5' : '#fff',
-                                        transition: 'all 0.2s',
-                                        '&:hover': {
-                                            boxShadow: 3,
-                                            backgroundColor: read ? '#f5f5f5' : '#fafafa'
-                                        }
-                                    }}
-                                >
-                                    <CardContent>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                            {!read && (
-                                                <Box
-                                                    sx={{
-                                                        width: 10,
-                                                        height: 10,
-                                                        borderRadius: '50%',
-                                                        backgroundColor: '#2196f3',
-                                                        flexShrink: 0
-                                                    }}
-                                                />
-                                            )}
-                                            <Typography
-                                                variant="h6"
-                                                sx={{
-                                                    fontWeight: read ? 'normal' : 'bold',
-                                                    flex: 1
-                                                }}
-                                            >
-                                                {notification.title || notification.subject || 'Notification'}
-                                            </Typography>
-                                            {notification.type && (
-                                                <Typography
-                                                    variant="caption"
-                                                    sx={{
-                                                        backgroundColor: '#e3f2fd',
-                                                        padding: '4px 8px',
-                                                        borderRadius: '4px',
-                                                        color: '#1976d2',
-                                                        flexShrink: 0
-                                                    }}
-                                                >
-                                                    {notification.type}
-                                                </Typography>
-                                            )}
-                                        </Box>
-                                        <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
-                                            {notification.message || notification.description || notification.body || 'No content'}
-                                        </Typography>
-                                        {notification.timestamp && (
-                                            <Typography variant="caption" sx={{ display: 'block', color: '#999' }}>
-                                                {new Date(notification.timestamp).toLocaleString()}
-                                            </Typography>
-                                        )}
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        );
-                    })}
-                </Grid>
+                                return (
+                                    <Grid item xs={12} key={String(notifId)}>
+                                        <Card
+                                            onClick={() => handleNotificationClick(notifId)}
+                                            sx={{
+                                                cursor: 'pointer',
+                                                opacity: read ? 0.6 : 1,
+                                                backgroundColor: read ? '#f5f5f5' : '#fff',
+                                                borderLeft: `4px solid ${getTypeColor(type)}`,
+                                                transition: 'all 0.2s',
+                                                '&:hover': {
+                                                    boxShadow: 3
+                                                }
+                                            }}
+                                        >
+                                            <CardContent>
+                                                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mb: 1 }}>
+                                                    {!read && (
+                                                        <Box
+                                                            sx={{
+                                                                width: 10,
+                                                                height: 10,
+                                                                borderRadius: '50%',
+                                                                backgroundColor: getTypeColor(type),
+                                                                flexShrink: 0,
+                                                                mt: 0.5
+                                                            }}
+                                                        />
+                                                    )}
+                                                    <Box sx={{ flex: 1 }}>
+                                                        <Typography
+                                                            variant="body1"
+                                                            sx={{
+                                                                fontWeight: read ? 'normal' : 'bold',
+                                                                mb: 0.5
+                                                            }}
+                                                        >
+                                                            {notification.message || notification.description || notification.body || 'No content'}
+                                                        </Typography>
+                                                        {notification.timestamp && (
+                                                            <Typography variant="caption" sx={{ display: 'block', color: '#999' }}>
+                                                                {new Date(notification.timestamp).toLocaleString()}
+                                                            </Typography>
+                                                        )}
+                                                    </Box>
+                                                </Box>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                );
+                            })}
+                        </Grid>
+                    </Box>
+                ))
             )}
 
             {!loading && notifications.length === 0 && (

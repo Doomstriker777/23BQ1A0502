@@ -113,39 +113,50 @@ const PriorityInbox = ({ token }) => {
                                     }}
                                 >
                                     <CardContent>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                            <Typography variant="h6" sx={{ fontWeight: 'bold', minWidth: 30 }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 1 }}>
+                                            <Typography variant="h6" sx={{ fontWeight: 'bold', minWidth: 40, flexShrink: 0 }}>
                                                 #{index + 1}
                                             </Typography>
-                                            <Typography
-                                                variant="h6"
-                                                sx={{
-                                                    fontWeight: read ? 'normal' : 'bold',
-                                                    flex: 1
-                                                }}
-                                            >
-                                                {notification.title || notification.subject || 'Notification'}
-                                            </Typography>
-                                            {notification.type && (
-                                                <Chip
-                                                    label={notification.type}
-                                                    size="small"
+                                            <Box sx={{ flex: 1 }}>
+                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                                                    {!read && (
+                                                        <Box
+                                                            sx={{
+                                                                width: 8,
+                                                                height: 8,
+                                                                borderRadius: '50%',
+                                                                backgroundColor: getPriorityColor(notification.type)
+                                                            }}
+                                                        />
+                                                    )}
+                                                    {notification.type && (
+                                                        <Chip
+                                                            label={notification.type}
+                                                            size="small"
+                                                            sx={{
+                                                                backgroundColor: getPriorityColor(notification.type),
+                                                                color: 'white',
+                                                                height: 24
+                                                            }}
+                                                        />
+                                                    )}
+                                                </Box>
+                                                <Typography
+                                                    variant="body1"
                                                     sx={{
-                                                        backgroundColor: getPriorityColor(notification.type),
-                                                        color: 'white',
-                                                        flexShrink: 0
+                                                        fontWeight: read ? 'normal' : 'bold',
+                                                        mb: 0.5
                                                     }}
-                                                />
-                                            )}
+                                                >
+                                                    {notification.message || notification.description || notification.body || 'No content'}
+                                                </Typography>
+                                                {notification.timestamp && (
+                                                    <Typography variant="caption" sx={{ display: 'block', color: '#999' }}>
+                                                        {new Date(notification.timestamp).toLocaleString()}
+                                                    </Typography>
+                                                )}
+                                            </Box>
                                         </Box>
-                                        <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
-                                            {notification.message || notification.description || notification.body || 'No content'}
-                                        </Typography>
-                                        {notification.timestamp && (
-                                            <Typography variant="caption" sx={{ display: 'block', color: '#999' }}>
-                                                {new Date(notification.timestamp).toLocaleString()}
-                                            </Typography>
-                                        )}
                                     </CardContent>
                                 </Card>
                             </Grid>
