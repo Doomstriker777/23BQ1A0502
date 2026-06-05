@@ -3,8 +3,8 @@
 export const fetchNotifications = async (token, options = {}) => {
     const { limit = 10, page = 1, notification_type = null } = options;
     
-    // Build the base URL
-    let url = "http://4.224.186.213/evaluation-service/notifications";
+    // Build the base URL using Vite proxy
+    let url = "/api/notifications";
     
     // Add query parameters
     const params = new URLSearchParams();
