@@ -20,5 +20,8 @@ dist-ssr
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 *.sw?
+
+# Vite & build caches
+.vite/
+notification_app_fe/dist/
