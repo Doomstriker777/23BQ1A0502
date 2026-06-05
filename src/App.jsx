@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Log } from './middleware/logger';
+import { Log } from '../logging_middleware/logger';
 import './App.css';
 
 function App() {

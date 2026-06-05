@@ -1,4 +1,4 @@
-// src/middleware/logger.js
+// logging_middleware/logger.js
 
 export const Log = async (stack, level, pkg, message) => {
     // 1. The API endpoint provided by Affordmed
@@ -19,7 +19,7 @@ export const Log = async (stack, level, pkg, message) => {
             headers: {
                 "Content-Type": "application/json",
                 // Added "Bearer " before the token!
-                "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiYXVkIjoiaHR0cDovLzIwLjI0NC41Ni4xNDQvZXZhbHVhdGlvbi1zZXJ2aWNlIiwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsImV4cCI6MTc4MDYzMzQ1MCwiaWF0IjoxNzgwNjMyNTUwLCJpc3MiOiJBZmZvcmQgTWVkaWNhbCBUZWNobm9sb2dpZXMgUHJpdmF0ZSBMaW1pdGVkIiwianRpIjoiNzk5MGFlMmYtNWU0NC00Y2FmLTljMDItNmYwYWVmMmU2YTMxIiwibG9jYWxlIjoiZW4tSU4iLCJuYW1lIjoiYWRhcnNoIGtpcmFuIHRhcHBpdGEiLCJzdWIiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAifSwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsIm5hbWUiOiJhZGFyc2gga2lyYW4gdGFwcGl0YSIsInJvbGxObyI6IjIzYnExYTA1MDIiLCJhY2Nlc3NDb2RlIjoiUVFkRVl5IiwiY2xpZW50SUQiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAiLCJjbGllbnRTZWNyZXQiOiJtUnhjWGp4WHpheFhLaFZ3In0.AZQzShWPTXopKZXFYcvC44F8vc3ZYBzBidOLU5ra8FA` 
+                "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiYXVkIjoiaHR0cDovLzIwLjI0NC41Ni4xNDQvZXZhbHVhdGlvbi1zZXJ2aWNlIiwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsImV4cCI6MTc4MDYzNTY2MiwiaWF0IjoxNzgwNjM0NzYyLCJpc3MiOiJBZmZvcmQgTWVkaWNhbCBUZWNobm9sb2dpZXMgUHJpdmF0ZSBMaW1pdGVkIiwianRpIjoiYWIwYjJmMGYtOTZkZS00NDliLWExNWMtNjZjNGJiZjE4MTIyIiwibG9jYWxlIjoiZW4tSU4iLCJuYW1lIjoiYWRhcnNoIGtpcmFuIHRhcHBpdGEiLCJzdWIiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAifSwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsIm5hbWUiOiJhZGFyc2gga2lyYW4gdGFwcGl0YSIsInJvbGxObyI6IjIzYnExYTA1MDIiLCJhY2Nlc3NDb2RlIjoiUVFkRVl5IiwiY2xpZW50SUQiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAiLCJjbGllbnRTZWNyZXQiOiJtUnhjWGp4WHpheFhLaFZ3In0.ySCb1C9RUE8xW9R3OBr9HqVH6Hv0elOQJ9srf31oF_g` 
             },
             // Fixed the "paayload" typo!
             body: JSON.stringify(payload)
