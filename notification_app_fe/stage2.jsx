@@ -1,4 +1,4 @@
-// notification_app_fe/stage1.js
+// notification_app_fe/stage2.jsx
 
 import { useState } from 'react';
 import {
@@ -6,57 +6,95 @@ import {
   Toolbar,
   Button,
   Box,
-  Container
+  Container,
+  Typography
 } from '@mui/material';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import AllNotifications from './src/pages/AllNotifications';
 import PriorityInbox from './src/pages/PriorityInbox';
-
-// Replace with your actual token from Postman
-const AUTH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiYXVkIjoiaHR0cDovLzIwLjI0NC41Ni4xNDQvZXZhbHVhdGlvbi1zZXJ2aWNlIiwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsImV4cCI6MTc4MDY0MDYyOCwiaWF0IjoxNzgwNjM5NzI4LCJpc3MiOiJBZmZvcmQgTWVkaWNhbCBUZWNobm9sb2dpZXMgUHJpdmF0ZSBMaW1pdGVkIiwianRpIjoiNDcxNGNiOTAtNThmMS00OWI0LTgzNmMtM2UwZWQ3MWRhZWViIiwibG9jYWxlIjoiZW4tSU4iLCJuYW1lIjoiYWRhcnNoIGtpcmFuIHRhcHBpdGEiLCJzdWIiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAifSwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsIm5hbWUiOiJhZGFyc2gga2lyYW4gdGFwcGl0YSIsInJvbGxObyI6IjIzYnExYTA1MDIiLCJhY2Nlc3NDb2RlIjoiUVFkRVl5IiwiY2xpZW50SUQiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAiLCJjbGllbnRTZWNyZXQiOiJtUnhjWGp4WHpheFhLaFZ3In0.e-q6pMpUOgRbzTs014BGu6u70NaxPmGILuEff2wU6NE";
 
 function Stage2App() {
   const [currentPage, setCurrentPage] = useState('all');
 
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: '#fafafa' }}>
+    <Box sx={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
       {/* Navigation Bar */}
-      <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
-        <Toolbar>
-          <NotificationsIcon sx={{ mr: 2, fontSize: 28 }} />
-          <Box sx={{ flexGrow: 1 }}>
-            <Button
-              color="inherit"
-              onClick={() => setCurrentPage('all')}
+      <AppBar 
+        position="sticky" 
+        sx={{ 
+          backgroundColor: '#1e293b', 
+          boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)'
+        }}
+      >
+        <Container maxWidth="lg">
+          <Toolbar disableGutters sx={{ height: '70px' }}>
+            <NotificationsActiveIcon sx={{ mr: 1.5, fontSize: 28, color: '#f59e0b' }} />
+            
+            <Typography
+              variant="h6"
+              noWrap
               sx={{
-                fontWeight: currentPage === 'all' ? 'bold' : 'normal',
-                fontSize: 16
+                mr: 4,
+                fontWeight: 800,
+                color: '#fff',
+                textDecoration: 'none',
+                letterSpacing: '-0.5px'
               }}
             >
-              All Notifications
-            </Button>
-            <Button
-              color="inherit"
-              onClick={() => setCurrentPage('priority')}
-              sx={{
-                fontWeight: currentPage === 'priority' ? 'bold' : 'normal',
-                fontSize: 16,
-                ml: 2
-              }}
-            >
-              Priority Inbox (Top 10)
-            </Button>
-          </Box>
-        </Toolbar>
+              AffordMed Alerts
+            </Typography>
+
+            <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }}>
+              <Button
+                onClick={() => setCurrentPage('all')}
+                sx={{
+                  color: '#fff',
+                  fontWeight: currentPage === 'all' ? 700 : 500,
+                  fontSize: '14px',
+                  px: 2,
+                  py: 1,
+                  borderRadius: '8px',
+                  backgroundColor: currentPage === 'all' ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.15)'
+                  }
+                }}
+              >
+                All Notifications
+              </Button>
+              
+              <Button
+                onClick={() => setCurrentPage('priority')}
+                sx={{
+                  color: '#fff',
+                  fontWeight: currentPage === 'priority' ? 700 : 500,
+                  fontSize: '14px',
+                  px: 2,
+                  py: 1,
+                  borderRadius: '8px',
+                  backgroundColor: currentPage === 'priority' ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.15)'
+                  }
+                }}
+              >
+                Priority Inbox (Top 10)
+              </Button>
+            </Box>
+          </Toolbar>
+        </Container>
       </AppBar>
 
       {/* Page Content */}
-      <Container maxWidth="lg">
-        {currentPage === 'all' && <AllNotifications token={AUTH_TOKEN} />}
-        {currentPage === 'priority' && <PriorityInbox token={AUTH_TOKEN} />}
+      <Container maxWidth="lg" sx={{ mt: 2 }}>
+        {currentPage === 'all' && <AllNotifications />}
+        {currentPage === 'priority' && <PriorityInbox />}
       </Container>
     </Box>
   );
 }
 
 export default Stage2App;
+

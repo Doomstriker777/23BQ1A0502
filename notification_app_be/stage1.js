@@ -1,5 +1,3 @@
-// notification_app_be/priorityInbox.js
-
 // Helper function to assign weight based on notification type
 const getWeight = (notificationType) => {
     if (notificationType === "Placement") {
@@ -12,17 +10,50 @@ const getWeight = (notificationType) => {
     return 0; // Default for unknown types
 };
 
+// Helper function to fetch dynamic token
+const getAuthToken = async () => {
+    const authUrl = "http://4.224.186.213/evaluation-service/auth";
+    const body = {
+        companyName: "Afford Medical Technologies Private Limited",
+        clientID: "735ce841-eeba-43dd-a094-fadccba85fa0",
+        clientSecret: "mRxcXjxXzaxXKhVw",
+        name: "adarsh kiran tappita",
+        email: "adarshkiran13@gmail.com",
+        rollNo: "23bq1a0502",
+        accessCode: "QQdEYy"
+    };
+
+    try {
+        const response = await fetch(authUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        if (!response.ok) {
+            throw new Error(`Auth failed with status ${response.status}`);
+        }
+        const data = await response.json();
+        return data.access_token;
+    } catch (err) {
+        console.error("Failed to authenticate:", err);
+        throw err;
+    }
+};
+
 // Main async function to fetch and sort notifications
 const getTopNotifications = async () => {
     const url = "http://4.224.186.213/evaluation-service/notifications";
     
     try {
+        // Fetch dynamic token
+        const token = await getAuthToken();
+
         // Fetch notifications from the API
         const response = await fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiYXVkIjoiaHR0cDovLzIwLjI0NC41Ni4xNDQvZXZhbHVhdGlvbi1zZXJ2aWNlIiwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsImV4cCI6MTc4MDY0MDYyOCwiaWF0IjoxNzgwNjM5NzI4LCJpc3MiOiJBZmZvcmQgTWVkaWNhbCBUZWNobm9sb2dpZXMgUHJpdmF0ZSBMaW1pdGVkIiwianRpIjoiNDcxNGNiOTAtNThmMS00OWI0LTgzNmMtM2UwZWQ3MWRhZWViIiwibG9jYWxlIjoiZW4tSU4iLCJuYW1lIjoiYWRhcnNoIGtpcmFuIHRhcHBpdGEiLCJzdWIiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAifSwiZW1haWwiOiJhZGFyc2hraXJhbjEzQGdtYWlsLmNvbSIsIm5hbWUiOiJhZGFyc2gga2lyYW4gdGFwcGl0YSIsInJvbGxObyI6IjIzYnExYTA1MDIiLCJhY2Nlc3NDb2RlIjoiUVFkRVl5IiwiY2xpZW50SUQiOiI3MzVjZTg0MS1lZWJhLTQzZGQtYTA5NC1mYWRjY2JhODVmYTAiLCJjbGllbnRTZWNyZXQiOiJtUnhjWGp4WHpheFhLaFZ3In0.e-q6pMpUOgRbzTs014BGu6u70NaxPmGILuEff2wU6NE"
+                "Authorization": `Bearer ${token}`
             }
         });
 
@@ -44,18 +75,18 @@ const getTopNotifications = async () => {
 
         // Sort notifications by weight (descending) and then by timestamp (newest first)
         const sortedNotifications = notifications.sort((a, b) => {
-            // Get weights for both notifications
-            const weightA = getWeight(a.type);
-            const weightB = getWeight(b.type);
+            // Get weights for both notifications (using API casing 'Type')
+            const weightA = getWeight(a.Type);
+            const weightB = getWeight(b.Type);
 
             // Compare weights first (higher weight comes first)
             if (weightA !== weightB) {
                 return weightB - weightA;
             }
 
-            // If weights are equal, compare timestamps (newest first)
-            const dateA = new Date(a.timestamp);
-            const dateB = new Date(b.timestamp);
+            // If weights are equal, compare timestamps (newest first, using API casing 'Timestamp')
+            const dateA = new Date(a.Timestamp);
+            const dateB = new Date(b.Timestamp);
             return dateB - dateA;
         });
 
@@ -74,3 +105,4 @@ const getTopNotifications = async () => {
 
 // Call the function
 getTopNotifications();
+
