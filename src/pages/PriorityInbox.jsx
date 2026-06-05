@@ -35,9 +35,7 @@ const PriorityInbox = ({ token }) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await fetchNotifications(token, {
-                limit: 100
-            });
+            const data = await fetchNotifications(token);
             
             // Sort by priority: weight first, then timestamp
             const sorted = (data.notifications || []).sort((a, b) => {

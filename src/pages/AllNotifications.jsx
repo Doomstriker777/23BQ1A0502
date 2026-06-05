@@ -30,10 +30,7 @@ const AllNotifications = ({ token }) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await fetchNotifications(token, {
-                limit: 100,
-                notification_type: filter || null
-            });
+            const data = await fetchNotifications(token);
             setNotifications(data.notifications || []);
         } catch (err) {
             setError(err.message);

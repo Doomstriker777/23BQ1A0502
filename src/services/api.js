@@ -1,21 +1,8 @@
 // src/services/api.js
 
 export const fetchNotifications = async (token, options = {}) => {
-    const { limit = 10, page = 1, notification_type = null } = options;
-    
     // Build the base URL using Vite proxy
     let url = "/api/notifications";
-    
-    // Add query parameters
-    const params = new URLSearchParams();
-    params.append("limit", limit);
-    params.append("page", page);
-    
-    if (notification_type) {
-        params.append("notification_type", notification_type);
-    }
-    
-    url += "?" + params.toString();
     
     try {
         const response = await fetch(url, {
