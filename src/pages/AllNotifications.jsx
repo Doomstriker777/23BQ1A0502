@@ -72,12 +72,12 @@ const AllNotifications = ({ token }) => {
                 </Box>
             ) : (
                 <Grid container spacing={2}>
-                    {notifications.map((notification) => {
-                        const notifId = notification.id || notification.timestamp;
+                    {notifications.map((notification, index) => {
+                        const notifId = notification.id || notification.timestamp || index;
                         const read = isRead(notifId);
 
                         return (
-                            <Grid item xs={12} key={notifId}>
+                            <Grid item xs={12} key={String(notifId)}>
                                 <Card
                                     onClick={() => handleNotificationClick(notifId)}
                                     sx={{
@@ -92,14 +92,15 @@ const AllNotifications = ({ token }) => {
                                     }}
                                 >
                                     <CardContent>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                                             {!read && (
                                                 <Box
                                                     sx={{
                                                         width: 10,
                                                         height: 10,
                                                         borderRadius: '50%',
-                                                        backgroundColor: '#2196f3'
+                                                        backgroundColor: '#2196f3',
+                                                        flexShrink: 0
                                                     }}
                                                 />
                                             )}
@@ -110,26 +111,31 @@ const AllNotifications = ({ token }) => {
                                                     flex: 1
                                                 }}
                                             >
-                                                {notification.title || 'Notification'}
+                                                {notification.title || notification.subject || 'Notification'}
                                             </Typography>
-                                            <Typography
-                                                variant="caption"
-                                                sx={{
-                                                    backgroundColor: '#e3f2fd',
-                                                    padding: '4px 8px',
-                                                    borderRadius: '4px',
-                                                    color: '#1976d2'
-                                                }}
-                                            >
-                                                {notification.type}
-                                            </Typography>
+                                            {notification.type && (
+                                                <Typography
+                                                    variant="caption"
+                                                    sx={{
+                                                        backgroundColor: '#e3f2fd',
+                                                        padding: '4px 8px',
+                                                        borderRadius: '4px',
+                                                        color: '#1976d2',
+                                                        flexShrink: 0
+                                                    }}
+                                                >
+                                                    {notification.type}
+                                                </Typography>
+                                            )}
                                         </Box>
-                                        <Typography variant="body2" sx={{ mt: 1 }}>
-                                            {notification.message || notification.description}
+                                        <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
+                                            {notification.message || notification.description || notification.body || 'No content'}
                                         </Typography>
-                                        <Typography variant="caption" sx={{ mt: 2, display: 'block' }}>
-                                            {new Date(notification.timestamp).toLocaleString()}
-                                        </Typography>
+                                        {notification.timestamp && (
+                                            <Typography variant="caption" sx={{ display: 'block', color: '#999' }}>
+                                                {new Date(notification.timestamp).toLocaleString()}
+                                            </Typography>
+                                        )}
                                     </CardContent>
                                 </Card>
                             </Grid>

@@ -94,11 +94,11 @@ const PriorityInbox = ({ token }) => {
             ) : (
                 <Grid container spacing={2}>
                     {notifications.map((notification, index) => {
-                        const notifId = notification.id || notification.timestamp;
+                        const notifId = notification.id || notification.timestamp || index;
                         const read = isRead(notifId);
 
                         return (
-                            <Grid item xs={12} key={notifId}>
+                            <Grid item xs={12} key={String(notifId)}>
                                 <Card
                                     onClick={() => handleNotificationClick(notifId)}
                                     sx={{
@@ -113,7 +113,7 @@ const PriorityInbox = ({ token }) => {
                                     }}
                                 >
                                     <CardContent>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                                             <Typography variant="h6" sx={{ fontWeight: 'bold', minWidth: 30 }}>
                                                 #{index + 1}
                                             </Typography>
@@ -124,23 +124,28 @@ const PriorityInbox = ({ token }) => {
                                                     flex: 1
                                                 }}
                                             >
-                                                {notification.title || 'Notification'}
+                                                {notification.title || notification.subject || 'Notification'}
                                             </Typography>
-                                            <Chip
-                                                label={notification.type}
-                                                size="small"
-                                                sx={{
-                                                    backgroundColor: getPriorityColor(notification.type),
-                                                    color: 'white'
-                                                }}
-                                            />
+                                            {notification.type && (
+                                                <Chip
+                                                    label={notification.type}
+                                                    size="small"
+                                                    sx={{
+                                                        backgroundColor: getPriorityColor(notification.type),
+                                                        color: 'white',
+                                                        flexShrink: 0
+                                                    }}
+                                                />
+                                            )}
                                         </Box>
-                                        <Typography variant="body2" sx={{ mt: 1 }}>
-                                            {notification.message || notification.description}
+                                        <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
+                                            {notification.message || notification.description || notification.body || 'No content'}
                                         </Typography>
-                                        <Typography variant="caption" sx={{ mt: 2, display: 'block' }}>
-                                            {new Date(notification.timestamp).toLocaleString()}
-                                        </Typography>
+                                        {notification.timestamp && (
+                                            <Typography variant="caption" sx={{ display: 'block', color: '#999' }}>
+                                                {new Date(notification.timestamp).toLocaleString()}
+                                            </Typography>
+                                        )}
                                     </CardContent>
                                 </Card>
                             </Grid>
